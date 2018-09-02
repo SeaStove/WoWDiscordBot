@@ -1,10 +1,9 @@
 const Discord = require('discord.js');
-const request = require('request')
-const config = require('./config.js')
+const request = require('request');
 
 const client = new Discord.Client();
 
-var apiKey = config.BOT_KEY
+var apiKey = process.env.BOT_KEY
  
 
 client.on('ready', () => {
@@ -18,7 +17,7 @@ client.on('ready', () => {
 
 client.on('message', async message => {
 
-    if(message.content.indexOf(process.env.prefix) !== 0) return;
+    if(message.content.indexOf(process.env.PREFIX) !== 0) return;
 
     if(message.author.bot) return;
 
@@ -44,4 +43,4 @@ client.on('message', async message => {
 
 // THIS  MUST  BE  THIS  WAY
 
-client.login(process.env.BOT_TOKEN);//where BOT_TOKEN is the token of our bot
+client.login(process.env.BOT_KEY);//where BOT_TOKEN is the token of our bot
