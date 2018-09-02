@@ -4,12 +4,12 @@ const request = require('request');
 const client = new Discord.Client();
 
 var apiKey = process.env.BOT_KEY
- 
+require('dotenv').config(); 
 
 client.on('ready', () => {
 
     console.log('I am ready!');
-
+	console.log('process.env.PREFIX');
 });
 
 
