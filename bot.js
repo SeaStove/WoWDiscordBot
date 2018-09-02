@@ -1,0 +1,47 @@
+const Discord = require('discord.js');
+const request = require('request')
+const config = require('config.js')
+
+const client = new Discord.Client();
+
+var apiKey = config.BOT_KEY
+ 
+
+client.on('ready', () => {
+
+    console.log('I am ready!');
+
+});
+
+
+ 
+
+client.on('message', async message => {
+
+    if(message.content.indexOf(process.env.prefix) !== 0) return;
+
+    if(message.author.bot) return;
+
+    if (message.content === process.env.prefix + "jefflevel") {
+        request("https://us.api.battle.net/wow/character/bleeding-hollow/Morgayne?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body) {
+
+            var obj = JSON.parse(body);
+            message.channel.send("Morgayne is level " + obj.level)
+        });
+        
+        // message.reply("stop");
+    }
+
+    if(message.content === process.env.prefix + "ping"){
+        message.reply("pong");
+    }
+
+    // message.reply("Message I'm lookin for: " + process.env.prefix + "ping");
+
+});
+
+ 
+
+// THIS  MUST  BE  THIS  WAY
+
+client.login(process.env.BOT_TOKEN);//where BOT_TOKEN is the token of our bot
