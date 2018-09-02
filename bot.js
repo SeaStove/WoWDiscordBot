@@ -26,7 +26,7 @@ client.on('message', async message => {
         
         // message.reply("stop");
     } else { 
-        message.reply("Message I'm lookin for: " + process.env.prefix + "jefflevel");
+        message.reply("Message I'm lookin for: " + process.env.PREFIX + "jefflevel");
     }
 
 });
