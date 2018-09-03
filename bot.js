@@ -25,8 +25,24 @@ client.on('message', async message => {
         });
         
         // message.reply("stop");
-    } else { 
-        message.reply("Message I'm lookin for: " + process.env.PREFIX + "jefflevel");
+    }  else if ( message.content === process.env.PREFIX + " who is better, jake or chris?"){ 
+        request("https://us.api.battle.net/wow/character/bleeding-hollow/Banquish?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body1) {
+            var jake = JSON.parse(body1);
+            request("https://us.api.battle.net/wow/character/malganis/chuckjohnson?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body2) {
+                var chris = JSON.parse(body2);
+                console.log(chris);
+                console.log(jake);
+                var chrisILvl = chris.items.averageItemLevel;
+                var jakeILvl = jake.items.averageItemLevel;
+                if (chrisILvl > jakeILvl){
+                    var better = chrisILvl - jakeILvl;
+                    message.channel.send("Chris has " + better + " more item level than Jake so definitely gotta go with Chris on this one.");
+                } else {
+                    var better = jakeILvl- chrisILvl;
+                    message.channel.send("Jake has " + better + " more item level than Chris so definitely gotta go with Chris on this one.");
+                }
+            });
+        });
     }
 
 });
