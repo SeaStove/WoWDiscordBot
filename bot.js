@@ -46,7 +46,7 @@ client.on('message', async message => {
 
     if(message.author.bot) return;
 
-    if (message.content === process.env.PREFIX + "jefflevel") {
+    if (message.content === process.env.PREFIX + " what level is jeff?") {
         request("https://us.api.battle.net/wow/character/bleeding-hollow/Morgayne?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body) {
             var obj = JSON.parse(body);
             message.channel.send("Morgayne is level " + obj.level)
@@ -71,7 +71,8 @@ client.on('message', async message => {
                 }
             });
         });
-    } else if ( message.content === process.env.PREFIX + ", gimme a role call"){
+    } else if ( message.content === process.env.PREFIX + " gimme a role call"){
+        var message;
         var players = [];
         message.channel.send("BEEP BEEP, HERE COMES THE CREW\n\n");
         //Jake
