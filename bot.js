@@ -14,7 +14,9 @@ let getCharInfo = function(name,realm,players){
         request("https://us.api.battle.net/wow/character/" + realm + "/" + name + "?fields=items,progression,quests,talents&apikey=" + apiKey, function (error, response, body) {
                 if(body){
                     var obj = JSON.parse(body);
-                    console.log(obj.name + " Item Level: " + obj.items.averageItemLevel);
+                    // console.log(body);
+                    // console.log(obj);
+                    // console.log(obj.name + " Item Level: " + obj.items.averageItemLevel);
                     players.push(obj);
                     resolve(players);
                 } else {
@@ -46,20 +48,29 @@ client.on('message', async message => {
 
     if(message.author.bot) return;
 
+    //Jeff Level
     if (message.content === process.env.PREFIX + " what level is jeff?") {
         request("https://us.api.battle.net/wow/character/bleeding-hollow/Morgayne?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body) {
             var obj = JSON.parse(body);
+            var thumbnail = "https://render-us.worldofwarcraft.com/character/" + obj.thumbnail
             message.channel.send("Morgayne is level " + obj.level)
         });
-        
-        // message.reply("stop");
-    }  else if ( message.content === process.env.PREFIX + " who is better, jake or chris?"){ 
+    //Josh Level
+    } else if (message.content === process.env.PREFIX + " what level is josh?") {
+        request("https://us.api.battle.net/wow/character/bleeding-hollow/Realios?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body) {
+            var obj = JSON.parse(body);
+            var thumbnail = "https://render-us.worldofwarcraft.com/character/" + obj.thumbnail
+            
+            message.channel.send("Realios is level " + obj.level, {file: thumbnail})
+        });
+    //Chris vs Jake  
+    } else if ( message.content === process.env.PREFIX + " who is better, jake or chris?"){ 
         request("https://us.api.battle.net/wow/character/bleeding-hollow/Banquish?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body1) {
             var jake = JSON.parse(body1);
             request("https://us.api.battle.net/wow/character/malganis/chuckjohnson?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body2) {
                 var chris = JSON.parse(body2);
-                console.log(chris);
-                console.log(jake);
+                // console.log(chris);
+                // console.log(jake);
                 var chrisILvl = chris.items.averageItemLevel;
                 var jakeILvl = jake.items.averageItemLevel;
                 if (chrisILvl > jakeILvl){
@@ -71,14 +82,14 @@ client.on('message', async message => {
                 }
             });
         });
+    //Role Call
     } else if ( message.content === process.env.PREFIX + " gimme a role call"){
-        var message;
         var players = [];
+        var i = 0;
         message.channel.send("BEEP BEEP, HERE COMES THE CREW\n\n");
         //Jake
         getCharInfo("Banquish","bleeding-hollow",players).then(function(players){
             var spec;
-            i=0;
             players[i].talents.forEach(function(talent){
                 if(talent.selected == true){
                     spec = talent.spec.name
@@ -152,7 +163,20 @@ client.on('message', async message => {
             var thumbnail = "https://render-us.worldofwarcraft.com/character/" + players[i].thumbnail
             var output = players[i].name + ", The " + races[players[i].race] + " " + spec + " " + classes[players[i].class] + "\nCharacter Level: " + players[i].level
             message.channel.send(output, {file: thumbnail});
-            return getCharInfo("Cattus","bleeding-hollow",players)
+            return getCharInfo("Realios","bleeding-hollow",players)
+        //Josh
+        }).then(function(players){
+            i++;
+            var spec;
+            players[i].talents.forEach(function(talent){
+                if(talent.selected == true){
+                    spec = talent.spec.name
+                }
+            })
+            var thumbnail = "https://render-us.worldofwarcraft.com/character/" + players[i].thumbnail
+            var output = players[i].name + ", The " + races[players[i].race] + " " + spec + " " + classes[players[i].class] + "\nCharacter Level: " + players[i].level
+            message.channel.send(output, {file: thumbnail});
+            return getCharInfo("Realios","bleeding-hollow",players)
         })
 
     }
