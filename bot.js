@@ -39,6 +39,20 @@ var classes = {
     7: "Shaman", 8: "Mage", 9: "Warlock", 10: "Monk", 11: "Druid", 12: "Demon Hunter"    
 };
 
+function formatDate(date) {
+    var monthNames = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
+  
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+  
+    return monthNames[monthIndex] + ' ' + day + ', ' + year;
+  }
 
  
 
@@ -53,7 +67,7 @@ client.on('message', async message => {
         request("https://us.api.battle.net/wow/character/bleeding-hollow/Morgayne?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body) {
             var obj = JSON.parse(body);
             var thumbnail = "https://render-us.worldofwarcraft.com/character/" + obj.thumbnail
-            message.channel.send("Morgayne is level " + obj.level)
+            message.channel.send("Morgayne is level " + obj.level, {file: thumbnail})
         });
     //Josh Level
     } else if (message.content === process.env.PREFIX + " what level is josh?") {
@@ -64,6 +78,17 @@ client.on('message', async message => {
             message.channel.send("Realios is level " + obj.level, {file: thumbnail})
         });
     //Chris vs Jake  
+    } else if (message.content === process.env.PREFIX + " has josh resubbed?") {
+        request("https://us.api.battle.net/wow/character/bleeding-hollow/Realios?fields=statistics&apikey=" + apiKey, function (error, response, body) {
+            var obj = JSON.parse(body);
+            var loginDate = new Date(obj.lastModified);
+            var joshBack = String("No, last login was " + formatDate(loginDate)); 
+            if(obj.lastModified > 1514939902000){
+                joshBack = "yes! WELCOME BACK JASHOU";
+            };
+            
+            message.channel.send(joshBack);
+        });
     } else if ( message.content === process.env.PREFIX + " who is better, jake or chris?"){ 
         request("https://us.api.battle.net/wow/character/bleeding-hollow/Banquish?fields=items,progression,quests&apikey=" + apiKey, function (error, response, body1) {
             var jake = JSON.parse(body1);
