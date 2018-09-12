@@ -201,7 +201,7 @@ client.on('message', async message => {
             var thumbnail = "https://render-us.worldofwarcraft.com/character/" + players[i].thumbnail
             var output = players[i].name + ", The " + races[players[i].race] + " " + spec + " " + classes[players[i].class] + "\nCharacter Level: " + players[i].level
             message.channel.send(output, {file: thumbnail});
-            return getCharInfo("Sinjaru","bleeding-zuljin",players)
+            return getCharInfo("Sinjaru","zuljin",players)
         }).then(function(players){
             i++;
             var spec;
