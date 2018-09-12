@@ -201,7 +201,19 @@ client.on('message', async message => {
             var thumbnail = "https://render-us.worldofwarcraft.com/character/" + players[i].thumbnail
             var output = players[i].name + ", The " + races[players[i].race] + " " + spec + " " + classes[players[i].class] + "\nCharacter Level: " + players[i].level
             message.channel.send(output, {file: thumbnail});
-            return getCharInfo("Realios","bleeding-hollow",players)
+            return getCharInfo("Sinjaru","bleeding-zuljin",players)
+        }).then(function(players){
+            i++;
+            var spec;
+            players[i].talents.forEach(function(talent){
+                if(talent.selected == true){
+                    spec = talent.spec.name
+                }
+            })
+            var thumbnail = "https://render-us.worldofwarcraft.com/character/" + players[i].thumbnail
+            var output = players[i].name + ", The " + races[players[i].race] + " " + spec + " " + classes[players[i].class] + "\nItem Level: " + players[i].items.averageItemLevel
+            message.channel.send(output, {file: thumbnail});
+            return getCharInfo("Realios","bleeding-zuljin",players)
         })
 
     }
